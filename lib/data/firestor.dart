@@ -21,7 +21,7 @@ class Firestore_Datasource {
     }
   }
 
-  Future<bool> AddNote(String subtitle, String title, int image) async {
+  Future<bool> AddNote(String subtitle, String title, int image, String status, String priority, DateTime dueDate) async {
     try {
       var uuid = Uuid().v4();
       DateTime data = new DateTime.now();

@@ -17,6 +17,10 @@ class _Home_ScreenState extends State<Home_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("To-Do List App"),
+        backgroundColor: Color(0xffADD8E6),
+      ),
       backgroundColor: backgroundColors,
       floatingActionButton: Visibility(
         visible: show,
@@ -26,7 +30,7 @@ class _Home_ScreenState extends State<Home_Screen> {
               builder: (context) => Add_creen(),
             ));
           },
-          backgroundColor: custom_green,
+          backgroundColor: Colors.blue,
           child: Icon(Icons.add, size: 30),
         ),
       ),
@@ -45,18 +49,17 @@ class _Home_ScreenState extends State<Home_Screen> {
             }
             return true;
           },
-          child: Column(
-            children: [
-              Stream_note(false),
-              Text(
-                'isDone',
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey.shade500,
-                    fontWeight: FontWeight.bold),
-              ),
-              Stream_note(true),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stream_note(
+                  false,
+                ),
+                Stream_note(
+                  true,
+                ),
+              ],
+            ),
           ),
         ),
       ),

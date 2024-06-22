@@ -52,7 +52,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
       children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: custom_green,
+            backgroundColor: custom_green,
             minimumSize: Size(170, 48),
           ),
           onPressed: () {
@@ -64,7 +64,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.red,
+            backgroundColor: Colors.red,
             minimumSize: Size(170, 48),
           ),
           onPressed: () {

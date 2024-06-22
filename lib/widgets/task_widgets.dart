@@ -4,9 +4,11 @@ import 'package:flutter_to_do_list/data/firestor.dart';
 import 'package:flutter_to_do_list/model/notes_model.dart';
 import 'package:flutter_to_do_list/screen/edit_screen.dart';
 
+const Color custom_blue = Color(0xff1E90FF); // Dodger Blue
+
 class Task_Widget extends StatefulWidget {
-  Note _note;
-  Task_Widget(this._note, {super.key});
+  final Note _note;
+  const Task_Widget(this._note, {Key? key}) : super(key: key);
 
   @override
   State<Task_Widget> createState() => _Task_WidgetState();
@@ -20,13 +22,13 @@ class _Task_WidgetState extends State<Task_Widget> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
         width: double.infinity,
-        height: 130,
+        height: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: const Color.fromARGB(255, 96, 94, 94).withOpacity(0.2),
               spreadRadius: 5,
               blurRadius: 7,
               offset: Offset(0, 2),
@@ -37,10 +39,10 @@ class _Task_WidgetState extends State<Task_Widget> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              // image
+              // Image
               imageee(),
               SizedBox(width: 25),
-              // title and subtitle
+              // Title and subtitle
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,35 +51,39 @@ class _Task_WidgetState extends State<Task_Widget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget._note.title,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            widget._note.title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Checkbox(
-                          activeColor: custom_green,
+                          activeColor: custom_blue,
                           value: isDone,
                           onChanged: (value) {
                             setState(() {
                               isDone = !isDone;
                             });
-                            Firestore_Datasource()
-                                .isdone(widget._note.id, isDone);
+                            Firestore_Datasource().isdone(widget._note.id, isDone);
                           },
-                        )
+                        ),
                       ],
                     ),
                     Text(
                       widget._note.subtitle,
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade400),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade400,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Spacer(),
-                    edit_time()
+                    editTime(),
                   ],
                 ),
               ),
@@ -87,17 +93,54 @@ class _Task_WidgetState extends State<Task_Widget> {
       ),
     );
   }
-
-  Widget edit_time() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Container(
+Widget editTime() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: Row(
+      children: [
+        Container(
+          width: 110,
+          height: 28,
+          decoration: BoxDecoration(
+            color: custom_blue,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 6,
+            ),
+            child: Row(
+              children: [
+                Image.asset('images/icon_time.png'),
+                SizedBox(width: 10),
+                Flexible(
+                  child: Text(
+                    widget._note.time,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(width: 20),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Edit_Screen(widget._note),
+            ));
+          },
+          child: Container(
             width: 90,
             height: 28,
             decoration: BoxDecoration(
-              color: custom_green,
+              color: Color(0xffE2F6F1),
               borderRadius: BorderRadius.circular(18),
             ),
             child: Padding(
@@ -107,59 +150,27 @@ class _Task_WidgetState extends State<Task_Widget> {
               ),
               child: Row(
                 children: [
-                  Image.asset('images/icon_time.png'),
+                  Image.asset('images/icon_edit.png'),
                   SizedBox(width: 10),
-                  Text(
-                    widget._note.time,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      'Edit',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(width: 20),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Edit_Screen(widget._note),
-              ));
-            },
-            child: Container(
-              width: 90,
-              height: 28,
-              decoration: BoxDecoration(
-                color: Color(0xffE2F6F1),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                child: Row(
-                  children: [
-                    Image.asset('images/icon_edit.png'),
-                    SizedBox(width: 10),
-                    Text(
-                      'edit',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   Widget imageee() {
     return Container(
@@ -171,6 +182,7 @@ class _Task_WidgetState extends State<Task_Widget> {
           image: AssetImage('images/${widget._note.image}.png'),
           fit: BoxFit.cover,
         ),
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
